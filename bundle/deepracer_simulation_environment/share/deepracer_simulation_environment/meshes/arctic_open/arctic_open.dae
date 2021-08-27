@@ -740,15 +740,6 @@
           </bind_material>
         </instance_geometry>
       </node>
-      <node id="wall" name="wall">
-        <instance_geometry url="#wallmesh0">
-          <bind_material>
-            <technique_common>
-              <instance_material symbol="wall_materialref" target="#wall_material0" />
-            </technique_common>
-          </bind_material>
-        </instance_geometry>
-      </node>
     <node id="StartLine" name="StartLine" type="NODE">
       <matrix sid="transform">-0.5702518254843904 -0.8214699358660184 0 6.709468344453479 0.8214699358660184 -0.5702518254843904 0 2.9108356048000203 0 0 1 0.0025 0 0 0 1</matrix>
       <instance_geometry name="StartLine" url="#Plane-mesh">
