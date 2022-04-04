@@ -1,13 +1,12 @@
-FROM nvidia/cudagl:10.0-runtime-ubuntu18.04 
+FROM nvidia/cudagl:11.4.2-runtime-ubuntu18.04 
 
 # Install CUDNN
 RUN echo "deb https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64 /" > /etc/apt/sources.list.d/nvidia-ml.list
 
-LABEL com.nvidia.cudnn.version="7.4.2.24"
+LABEL com.nvidia.cudnn.version="8.2.4.15"
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    libcudnn7=7.4.2.24-1+cuda10.0 \
-    libcudnn7-dev=7.4.2.24-1+cuda10.0 \
+    libcudnn8=8.2.4.15-1+cuda11.4 \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Linux stuff
@@ -24,6 +23,7 @@ RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main"
 RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
 RUN apt-get update -y && \
     apt-get install ros-melodic-ros-base python-rosdep python-rosinstall python-rosinstall-generator python-wstool -y --allow-unauthenticated --no-install-recommends && \
+    apt-get install -y ros-melodic-media-export ros-melodic-web-video-server ros-melodic-rosmsg python-matplotlib ros-melodic-h264-encoder-core --no-install-recommends && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -69,8 +69,7 @@ RUN python2 -m pip install --no-cache-dir 'opencv-python>=4.2,<4.3'
 
 COPY bundle /opt/install
 WORKDIR /opt/install
-RUN apt-get update -y && rosdep install --from-paths . --ignore-src -r -y deepracer_gazebo_system_plugin deepracer_msgs deepracer_simulation_environment && \
-    apt-get install -y ros-melodic-media-export ros-melodic-web-video-server ros-melodic-rosmsg python-matplotlib --no-install-recommends && \
+RUN apt-get update -y && rosdep install --from-paths . --ignore-src -r -y deepracer_gazebo_system_plugin deepracer_msgs deepracer_simulation_environment h264_video_encoder && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 ENV COLCON_CURRENT_PREFIX="/opt/install"
